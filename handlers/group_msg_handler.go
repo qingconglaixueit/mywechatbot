@@ -6,7 +6,7 @@ import (
 	"github.com/eatmoreapple/openwechat"
 	"github.com/qingconglaixueit/wechatbot/config"
 	"github.com/qingconglaixueit/wechatbot/gpt"
-	"github.com/qingconglaixueit/wechatbot/pkg/logger"
+	"github.com/qingconglaixueit/abing_logger"
 	"github.com/qingconglaixueit/wechatbot/rule"
 	"github.com/qingconglaixueit/wechatbot/service"
 	"strings"
@@ -51,14 +51,14 @@ func GroupMessageContextHandler() func(ctx *openwechat.MessageContext) {
 		// 获取用户消息处理器
 		handler, err := NewGroupMessageHandler(msg)
 		if err != nil {
-			logger.Warning(fmt.Sprintf("init group message handler error: %s", err))
+			abing_logger.SugarLogger.Warn(fmt.Sprintf("init group message handler error: %s", err))
 			return
 		}
 
 		// 处理用户消息
 		err = handler.handle()
 		if err != nil {
-			logger.Warning(fmt.Sprintf("handle group message error: %s", err))
+			abing_logger.SugarLogger.Warn(fmt.Sprintf("handle group message error: %s", err))
 		}
 	}
 }
@@ -97,7 +97,7 @@ func (g *GroupMessageHandler) handle() error {
 
 // ReplyText 发息送文本消到群
 func (g *GroupMessageHandler) ReplyText() error {
-	logger.Info(fmt.Sprintf("Received Group %v Text Msg : %v", g.group.NickName, g.msg.Content))
+	abing_logger.SugarLogger.Info(fmt.Sprintf("Received Group %v Text Msg : %v", g.group.NickName, g.msg.Content))
 	var (
 		err   error
 		reply string
@@ -111,22 +111,22 @@ func (g *GroupMessageHandler) ReplyText() error {
 	// 2.获取请求的文本，如果为空字符串不处理
 	requestText := g.getRequestText()
 	if requestText == "" {
-		logger.Info("user message is null")
+		abing_logger.SugarLogger.Warn("user message is null")
 		return nil
 	}
-	logger.Info("requestText == ", requestText)
+	abing_logger.SugarLogger.Info("requestText == ", requestText)
 	if requestText == WorkTime {
 		reply = fmt.Sprintf(replyWorkTime, config.LoadConfig().StartTime, config.LoadConfig().EndTime)
 	}
-	logger.Info("--------------------", rule.Grule.InSlice(g.sender.NickName, VipUserList))
+	abing_logger.SugarLogger.Info("--------------------", rule.Grule.InSlice(g.sender.NickName, VipUserList))
 	// 识别到是 Anonymous 发送过来的消息，且是 “该休息了！”，那么则将全局变量设置为 false，休息状态
 	if rule.Grule.InSlice(g.sender.NickName, VipUserList) && requestText == HaveARest {
-		logger.Info("have a rest !!!!!")
+		abing_logger.SugarLogger.Info("have a rest !!!!!")
 		rule.Grule.SetWork(false)
 		reply = replyForRest
 	}
 	if rule.Grule.InSlice(g.sender.NickName, VipUserList) && requestText == WorkStr {
-		logger.Info("work start !!!!!")
+		abing_logger.SugarLogger.Info("work start !!!!!")
 		rule.Grule.SetWork(true)
 		reply = replyForWork
 	}
@@ -153,12 +153,12 @@ func (g *GroupMessageHandler) ReplyText() error {
 			} else {
 				tmp, err := rule.Grule.GetNum()
 				if err != nil {
-					logger.Warning("rule.Grule.GetNum error ", err)
+					abing_logger.SugarLogger.Warnf("rule.Grule.GetNum error ", err)
 				}
 				ToTalNumber = tmp + 1
 			}
 			if err := rule.Grule.WriteNum(ToTalNumber); err != nil {
-				logger.Warning("rule.Grule.WriteNum error ", err)
+				abing_logger.SugarLogger.Warnf("rule.Grule.WriteNum error ", err)
 			}
 
 			reply, err = gpt.Completions(requestText)
@@ -201,7 +201,7 @@ func (g *GroupMessageHandler) getRequestText() string {
 	if requestText == "" {
 		return ""
 	}
-	logger.Info("2222 requestText == ", requestText)
+	abing_logger.SugarLogger.Info("2222 requestText == ", requestText)
 	if requestText == WorkTime || requestText == HaveARest || requestText == WorkStr {
 		return requestText
 	}

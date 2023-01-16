@@ -6,7 +6,7 @@ import (
 	"github.com/eatmoreapple/openwechat"
 	"github.com/qingconglaixueit/wechatbot/config"
 	"github.com/qingconglaixueit/wechatbot/gpt"
-	"github.com/qingconglaixueit/wechatbot/pkg/logger"
+	"github.com/qingconglaixueit/abing_logger"
 	"github.com/qingconglaixueit/wechatbot/rule"
 	"github.com/qingconglaixueit/wechatbot/service"
 	"strings"
@@ -29,13 +29,13 @@ func UserMessageContextHandler() func(ctx *openwechat.MessageContext) {
 		msg := ctx.Message
 		handler, err := NewUserMessageHandler(msg)
 		if err != nil {
-			logger.Warning(fmt.Sprintf("init user message handler error: %s", err))
+			abing_logger.SugarLogger.Warn(fmt.Sprintf("init user message handler error: %s", err))
 		}
 
 		// 处理用户消息
 		err = handler.handle()
 		if err != nil {
-			logger.Warning(fmt.Sprintf("handle user message error: %s", err))
+			abing_logger.SugarLogger.Warn(fmt.Sprintf("handle user message error: %s", err))
 		}
 	}
 }
@@ -66,7 +66,7 @@ func (h *UserMessageHandler) handle() error {
 
 // ReplyText 发送文本消息到群
 func (h *UserMessageHandler) ReplyText() error {
-	logger.Info(fmt.Sprintf("Received User %v Text Msg : %v", h.sender.NickName, h.msg.Content))
+	abing_logger.SugarLogger.Info(fmt.Sprintf("Received User %v Text Msg : %v", h.sender.NickName, h.msg.Content))
 	var (
 		reply string
 		err   error
@@ -74,10 +74,10 @@ func (h *UserMessageHandler) ReplyText() error {
 	// 1.获取上下文，如果字符串为空不处理
 	requestText := h.getRequestText()
 	if requestText == "" {
-		logger.Info("user message is null")
+		abing_logger.SugarLogger.Info("user message is null")
 		return nil
 	}
-	logger.Info(fmt.Sprintf("h.sender.NickName == %+v", h.sender.NickName))
+	abing_logger.SugarLogger.Info(fmt.Sprintf("h.sender.NickName == %+v", h.sender.NickName))
 	// 只有 vip 用户才能私聊
 	if rule.Grule.InSlice(h.sender.NickName, VipUserList) {
 		if ToTalNumber != 0 {
@@ -85,12 +85,12 @@ func (h *UserMessageHandler) ReplyText() error {
 		} else {
 			tmp, err := rule.Grule.GetNum()
 			if err != nil {
-				logger.Warning("rule.Grule.GetNum error ", err)
+				abing_logger.SugarLogger.Warn("rule.Grule.GetNum error ", err)
 			}
 			ToTalNumber = tmp + 1
 		}
 		if err := rule.Grule.WriteNum(ToTalNumber); err != nil {
-			logger.Warning("rule.Grule.WriteNum error ", err)
+			abing_logger.SugarLogger.Warn("rule.Grule.WriteNum error ", err)
 		}
 		// 2.向GPT发起请求，如果回复文本等于空,不回复
 		reply, err = gpt.Completions(h.getRequestText())

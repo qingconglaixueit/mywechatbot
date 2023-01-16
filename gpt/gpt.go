@@ -6,7 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/qingconglaixueit/wechatbot/config"
-	"github.com/qingconglaixueit/wechatbot/pkg/logger"
+	"github.com/qingconglaixueit/abing_logger"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -64,7 +64,7 @@ func Completions(msg string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	logger.Info(fmt.Sprintf("request gpt json string : %v", string(requestData)))
+	abing_logger.SugarLogger.Info(fmt.Sprintf("request gpt json string : %v", string(requestData)))
 	req, err := http.NewRequest("POST", BASEURL+"completions", bytes.NewBuffer(requestData))
 	if err != nil {
 		return "", err
@@ -87,7 +87,7 @@ func Completions(msg string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	logger.Info(fmt.Sprintf("response gpt json string : %v", string(body)))
+	abing_logger.SugarLogger.Info(fmt.Sprintf("response gpt json string : %v", string(body)))
 
 	gptResponseBody := &ChatGPTResponseBody{}
 	log.Println(string(body))
@@ -100,6 +100,6 @@ func Completions(msg string) (string, error) {
 	if len(gptResponseBody.Choices) > 0 {
 		reply = gptResponseBody.Choices[0].Text
 	}
-	logger.Info(fmt.Sprintf("gpt response text: %s ", reply))
+	abing_logger.SugarLogger.Info(fmt.Sprintf("gpt response text: %s ", reply))
 	return reply, nil
 }

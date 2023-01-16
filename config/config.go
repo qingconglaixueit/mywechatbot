@@ -2,8 +2,7 @@ package config
 
 import (
 	"encoding/json"
-	"fmt"
-	"github.com/qingconglaixueit/wechatbot/pkg/logger"
+	"github.com/qingconglaixueit/abing_logger"
 	"log"
 	"os"
 	"strconv"
@@ -89,7 +88,7 @@ func LoadConfig() *Configuration {
 		if SessionTimeout != "" {
 			duration, err := time.ParseDuration(SessionTimeout)
 			if err != nil {
-				logger.Danger(fmt.Sprintf("config session timeout err: %v ,get is %v", err, SessionTimeout))
+				abing_logger.SugarLogger.Errorf("config session timeout err: %v ,get is %v", err, SessionTimeout)
 				return
 			}
 			config.SessionTimeout = duration
@@ -100,7 +99,7 @@ func LoadConfig() *Configuration {
 		if MaxTokens != "" {
 			max, err := strconv.Atoi(MaxTokens)
 			if err != nil {
-				logger.Danger(fmt.Sprintf("config MaxTokens err: %v ,get is %v", err, MaxTokens))
+				abing_logger.SugarLogger.Errorf("config MaxTokens err: %v ,get is %v", err, MaxTokens)
 				return
 			}
 			config.MaxTokens = uint(max)
@@ -108,7 +107,7 @@ func LoadConfig() *Configuration {
 		if Temperature != "" {
 			temp, err := strconv.ParseFloat(Temperature, 64)
 			if err != nil {
-				logger.Danger(fmt.Sprintf("config Temperature err: %v ,get is %v", err, Temperature))
+				abing_logger.SugarLogger.Errorf("config Temperature err: %v ,get is %v", err, Temperature)
 				return
 			}
 			config.Temperature = temp
@@ -123,8 +122,8 @@ func LoadConfig() *Configuration {
 		if StartTime != "" {
 			sTime, err := strconv.Atoi(StartTime)
 			if err != nil {
-				logger.Warning("StartTime=%s  strconv.Atoi error:%+v",StartTime,err)
-			}else{
+				abing_logger.SugarLogger.Errorf("StartTime=%s  strconv.Atoi error:%+v", StartTime, err)
+			} else {
 				config.StartTime = sTime
 			}
 		}
@@ -132,15 +131,15 @@ func LoadConfig() *Configuration {
 		if EndTime != "" {
 			eTime, err := strconv.Atoi(EndTime)
 			if err != nil {
-				logger.Warning("EndTime=%s  strconv.Atoi error:%+v",EndTime,err)
-			}else{
+				abing_logger.SugarLogger.Errorf("EndTime=%s  strconv.Atoi error:%+v", EndTime, err)
+			} else {
 				config.EndTime = eTime
 			}
 		}
 
 	})
 	if config.ApiKey == "" {
-		logger.Danger("config err: api key required")
+		abing_logger.SugarLogger.Error("config err: api key required")
 	}
 
 	return config

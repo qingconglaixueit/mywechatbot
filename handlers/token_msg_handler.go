@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"fmt"
-	"github.com/qingconglaixueit/wechatbot/pkg/logger"
+	"github.com/qingconglaixueit/abing_logger"
 	"github.com/qingconglaixueit/wechatbot/service"
 	"github.com/eatmoreapple/openwechat"
 )
@@ -25,13 +25,13 @@ func TokenMessageContextHandler() func(ctx *openwechat.MessageContext) {
 		// 获取口令消息处理器
 		handler, err := NewTokenMessageHandler(msg)
 		if err != nil {
-			logger.Warning(fmt.Sprintf("init token message handler error: %s", err))
+			abing_logger.SugarLogger.Warn(fmt.Sprintf("init token message handler error: %s", err))
 		}
 
 		// 获取口令消息处理器
 		err = handler.handle()
 		if err != nil {
-			logger.Warning(fmt.Sprintf("handle token message error: %s", err))
+			abing_logger.SugarLogger.Warn(fmt.Sprintf("handle token message error: %s", err))
 		}
 
 	}
@@ -63,7 +63,7 @@ func (t *TokenMessageHandler) handle() error {
 
 // ReplyText 回复清空口令
 func (t *TokenMessageHandler) ReplyText() error {
-	logger.Info("user clear token")
+	abing_logger.SugarLogger.Info("user clear token")
 	t.service.ClearUserSessionContext()
 	var err error
 	if t.msg.IsComeFromGroup() {

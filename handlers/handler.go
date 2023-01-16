@@ -3,7 +3,7 @@ package handlers
 import (
 	"fmt"
 	"github.com/qingconglaixueit/wechatbot/config"
-	"github.com/qingconglaixueit/wechatbot/pkg/logger"
+	"github.com/qingconglaixueit/abing_logger"
 	"github.com/eatmoreapple/openwechat"
 	"github.com/patrickmn/go-cache"
 	"github.com/skip2/go-qrcode"
@@ -56,7 +56,7 @@ func NewHandler() (msgFunc func(msg *openwechat.Message), err error) {
 		if config.LoadConfig().AutoPass {
 			_, err := msg.Agree("")
 			if err != nil {
-				logger.Warning(fmt.Sprintf("add friend agree error : %v", err))
+				abing_logger.SugarLogger.Warn(fmt.Sprintf("add friend agree error : %v", err))
 				return
 			}
 		}

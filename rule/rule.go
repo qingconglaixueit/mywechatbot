@@ -1,11 +1,11 @@
 package rule
 
 import (
-	"github.com/qingconglaixueit/wechatbot/pkg/logger"
 	"io/ioutil"
 	"strconv"
 	"sync"
 	"time"
+	"github.com/qingconglaixueit/abing_logger"
 )
 
 const (
@@ -61,7 +61,7 @@ func (r *Rule) InSlice(str string, sli []string) bool {
 
 func (r *Rule) WriteNum(num int) error {
 	if err := ioutil.WriteFile(numberFile, []byte(strconv.Itoa(num)), 0666); err != nil {
-		logger.Warning("WriteFile error ", err)
+		abing_logger.SugarLogger.Warn("WriteFile error ", err)
 		return err
 	}
 	return nil
@@ -69,14 +69,14 @@ func (r *Rule) WriteNum(num int) error {
 func(r *Rule)  GetNum() (int, error) {
 	data, err := ioutil.ReadFile(numberFile)
 	if err != nil {
-		logger.Warning("ReadFile error ", err)
+		abing_logger.SugarLogger.Warn("ReadFile error ", err)
 		return 0, err
 	}
 	tmp := string(data)
 
 	num ,err :=strconv.Atoi(tmp)
 	if err != nil {
-		logger.Warning("Atoi error ", err)
+		abing_logger.SugarLogger.Warn("Atoi error ", err)
 		return 0, err
 	}
 
