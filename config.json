@@ -1,0 +1,12 @@
+{
+  "api_key": "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",
+  "auto_pass": false,
+  "session_timeout": 60,
+  "max_tokens": 1024,
+  "model": "text-davinci-003",
+  "temperature": 1,
+  "reply_prefix": "来自 AI BOT 回复：",
+  "session_clear_token": "清空会话",
+  "start_time": 10,
+  "end_time": 23
+}
