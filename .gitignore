@@ -1,0 +1,5 @@
+config.json
+wechatbot
+*.exe
+go.*
+storage.json

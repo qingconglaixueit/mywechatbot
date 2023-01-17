@@ -4,9 +4,9 @@ import (
 	"errors"
 	"fmt"
 	"github.com/eatmoreapple/openwechat"
+	"github.com/qingconglaixueit/abing_logger"
 	"github.com/qingconglaixueit/wechatbot/config"
 	"github.com/qingconglaixueit/wechatbot/gpt"
-	"github.com/qingconglaixueit/abing_logger"
 	"github.com/qingconglaixueit/wechatbot/rule"
 	"github.com/qingconglaixueit/wechatbot/service"
 	"strings"
@@ -103,15 +103,14 @@ func (h *UserMessageHandler) ReplyText() error {
 			}
 			return err
 		}
-	} else {
-		reply = replyPersonal
 	}
-
-	// 2.设置上下文，回复用户
-	h.service.SetUserSessionContext(requestText, reply)
-	_, err = h.msg.ReplyText(buildUserReply(reply))
-	if err != nil {
-		return errors.New(fmt.Sprintf("response user error: %v ", err))
+	if reply != ""{
+		// 2.设置上下文，回复用户
+		h.service.SetUserSessionContext(requestText, reply)
+		_, err = h.msg.ReplyText(buildUserReply(reply))
+		if err != nil {
+			return errors.New(fmt.Sprintf("response user error: %v ", err))
+		}
 	}
 
 	// 3.返回错误
