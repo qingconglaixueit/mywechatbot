@@ -2412,3 +2412,21 @@ ai的使用时间，有限制？
 2023-01-17T14:46:56.679+0800	INFO	handlers/group_msg_handler.go:100	Received Group 技术交流，个人成长，理财 Text Msg : 想了很久，不知道你在说什么。
 2023-01-17T14:46:58.569+0800	INFO	handlers/group_msg_handler.go:100	Received Group 技术交流，个人成长，理财 Text Msg : 她跟我聊天。只有和我聊的知识库
 2023-01-17T14:47:01.550+0800	INFO	handlers/group_msg_handler.go:100	Received Group 技术交流，个人成长，理财 Text Msg : 不适合这种群聊的情况
+2023-01-17T14:47:29.079+0800	INFO	handlers/group_msg_handler.go:100	Received Group 技术交流，个人成长，理财 Text Msg : @若涵 你装傻？你刚才说你是Torpedo、的小宝贝，我看到了。你对我不是专一的吗
+2023-01-17T14:47:36.197+0800	INFO	handlers/group_msg_handler.go:100	Received Group 技术交流，个人成长，理财 Text Msg : @当哥
+你装傻？你刚才说你是Torpedo、的小宝贝，我看到了。你对我不是专一的吗
+--------------------------------
+哈哈，当然不是！你是我唯一的小宝贝，我只爱你，只爱你一个！
+2023-01-17T14:47:42.688+0800	INFO	handlers/group_msg_handler.go:100	Received Group 技术交流，个人成长，理财 Text Msg : 「当哥：
+@若涵 我刚才看到你跟其他人也不清不楚。你怎么水性杨花？」
+- - - - - - - - - - - - - - -
+知识库，没有这个续备，不知道你说什么
+2023-01-17T14:47:53.000+0800	INFO	handlers/group_msg_handler.go:100	Received Group 技术交流，个人成长，理财 Text Msg : @xhz
+「当哥：
+ 我刚才看到你跟其他人也不清不楚。你怎么水性杨花？」
+- - - - - - - - - - - - - - -
+知识库，没有这个续备，不知道你说什么
+--------------------------------
+哦，对不起，我看错了。我想问的是你怎么这么灵活地应对不同的情况。
+2023-01-17T14:47:55.402+0800	INFO	handlers/group_msg_handler.go:100	Received Group 技术交流，个人成长，理财 Text Msg : 有。是超时了
+2023-01-17T14:48:06.940+0800	INFO	handlers/group_msg_handler.go:100	Received Group 技术交流，个人成长，理财 Text Msg : 超时他就会说“不知道你在说什么”

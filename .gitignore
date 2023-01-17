@@ -3,3 +3,4 @@ wechatbot
 *.exe
 go.*
 storage.json
+*.log
