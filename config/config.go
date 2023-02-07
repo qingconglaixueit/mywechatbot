@@ -32,6 +32,8 @@ type Configuration struct {
 	StartTime int `json:"start_time"`
 	// 每天工作结束时间
 	EndTime int `json:"end_time"`
+	// 每天请求次数
+	CurrentMaxReq int `json:"current_max_req"`
 }
 
 var config *Configuration
@@ -50,6 +52,7 @@ func LoadConfig() *Configuration {
 			SessionClearToken: "下一个问题",
 			StartTime:         9,
 			EndTime:           21,
+			CurrentMaxReq:     10,
 		}
 
 		// 判断配置文件是否存在，存在直接JSON读取
@@ -79,6 +82,7 @@ func LoadConfig() *Configuration {
 		SessionClearToken := os.Getenv("SESSION_CLEAR_TOKEN")
 		StartTime := os.Getenv("START_TIME")
 		EndTime := os.Getenv("END_TIME")
+		CurrentMaxReq := os.Getenv("CurrentMaxReq")
 		if ApiKey != "" {
 			config.ApiKey = ApiKey
 		}
@@ -135,6 +139,15 @@ func LoadConfig() *Configuration {
 			} else {
 				config.EndTime = eTime
 			}
+		}
+
+		if CurrentMaxReq != ""{
+			crq, err := strconv.Atoi(CurrentMaxReq)
+			if err != nil {
+				abing_logger.SugarLogger.Errorf("config CurrentMaxReq err: %v ,get is %v", err, CurrentMaxReq)
+				return
+			}
+			config.CurrentMaxReq = int(crq)
 		}
 
 	})

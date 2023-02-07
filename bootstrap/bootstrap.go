@@ -1,9 +1,10 @@
 package bootstrap
 
 import (
-	"github.com/qingconglaixueit/wechatbot/handlers"
-	"github.com/qingconglaixueit/abing_logger"
 	"github.com/eatmoreapple/openwechat"
+	"github.com/qingconglaixueit/abing_logger"
+	"github.com/qingconglaixueit/wechatbot/handlers"
+	"github.com/qingconglaixueit/wechatbot/model/mycron"
 )
 
 func Run() {
@@ -38,6 +39,9 @@ func Run() {
 		abing_logger.SugarLogger.Warnf("login error: %v ", err)
 		return
 	}
+	// 每天凌晨重置当如请求 gpt 的次数
+	go mycron.StartCron("0 30 0 * * *",handlers.ReSetCurrentReqTimes)
+
 	// 阻塞主goroutine, 直到发生异常或者用户主动退出
 	bot.Block()
 }

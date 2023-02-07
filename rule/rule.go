@@ -1,24 +1,39 @@
 package rule
 
 import (
+	"github.com/qingconglaixueit/abing_logger"
 	"io/ioutil"
 	"strconv"
+	"strings"
 	"sync"
 	"time"
-	"github.com/qingconglaixueit/abing_logger"
 )
 
 const (
 	STARTTIME = 9
 	ENDTIME   = 21
-	numberFile = "./number.txt"
 )
 
 type Rule struct{}
-
+// 当前机器人是否工作
 var isWork = true
+// 当日是否已经次数超限
+var degreeOverrun = false
 var Grule = &Rule{}
 var lock sync.Mutex
+
+func (r *Rule) SetDegreeOverrun(degree bool) {
+	lock.Lock()
+	defer lock.Unlock()
+	degreeOverrun = degree
+	return
+}
+func (r *Rule) GetDegreeOverrun() bool {
+	lock.Lock()
+	defer lock.Unlock()
+	return degreeOverrun
+}
+
 
 func (r *Rule) SetWork(work bool) {
 	lock.Lock()
@@ -59,21 +74,21 @@ func (r *Rule) InSlice(str string, sli []string) bool {
 	return false
 }
 
-func (r *Rule) WriteNum(num int) error {
+func (r *Rule) WriteNum(num int,numberFile string) error {
 	if err := ioutil.WriteFile(numberFile, []byte(strconv.Itoa(num)), 0666); err != nil {
 		abing_logger.SugarLogger.Warn("WriteFile error ", err)
 		return err
 	}
 	return nil
 }
-func(r *Rule)  GetNum() (int, error) {
+func(r *Rule)  GetNum(numberFile string) (int, error) {
 	data, err := ioutil.ReadFile(numberFile)
 	if err != nil {
 		abing_logger.SugarLogger.Warn("ReadFile error ", err)
 		return 0, err
 	}
 	tmp := string(data)
-
+	strings.ReplaceAll(tmp,"\n","")
 	num ,err :=strconv.Atoi(tmp)
 	if err != nil {
 		abing_logger.SugarLogger.Warn("Atoi error ", err)

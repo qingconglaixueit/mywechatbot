@@ -8,5 +8,6 @@
   "reply_prefix": "来自机器人回复：",
   "session_clear_token": "清空会话",
   "start_time": 9,
-  "end_time": 21
+  "end_time": 21,
+  "current_max_req": 10
 }

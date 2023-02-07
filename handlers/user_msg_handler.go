@@ -83,13 +83,13 @@ func (h *UserMessageHandler) ReplyText() error {
 		if ToTalNumber != 0 {
 			ToTalNumber = ToTalNumber + 1
 		} else {
-			tmp, err := rule.Grule.GetNum()
+			tmp, err := rule.Grule.GetNum(numberFile)
 			if err != nil {
 				abing_logger.SugarLogger.Warn("rule.Grule.GetNum error ", err)
 			}
 			ToTalNumber = tmp + 1
 		}
-		if err := rule.Grule.WriteNum(ToTalNumber); err != nil {
+		if err := rule.Grule.WriteNum(ToTalNumber,numberFile); err != nil {
 			abing_logger.SugarLogger.Warn("rule.Grule.WriteNum error ", err)
 		}
 		// 2.向GPT发起请求，如果回复文本等于空,不回复
